@@ -74,3 +74,12 @@
     - 클라이언트
 
     ![멀티태스킹 클라이언트](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/multi002.png)
+
+    - select 함수의 기능과 호출순서
+        - select 함수를 사용하면 한곳에 여러개의 파일 디스크립터를 모아놓고 동시에 관찰할 수 있다.
+        - 관찰항목 각각을 가리켜 이벤트라고 한다.
+
+        - 호출순서
+            1. 파일 디스크립터의 설정, 검사의 범위 지정, 타임아웃의 설정
+            2. select 함수의 호출
+            3. 호출결과 확인
