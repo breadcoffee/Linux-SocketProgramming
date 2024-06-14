@@ -83,3 +83,5 @@
             1. 파일 디스크립터의 설정, 검사의 범위 지정, 타임아웃의 설정
             2. select 함수의 호출
             3. 호출결과 확인
+
+        ![select 클라이언트](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/select001.png)
