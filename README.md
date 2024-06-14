@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Linux-SocketProgramming-2024
 부경대 2024 IoT 개발자 과정 리눅스 소켓프로그래밍 학습 리포지토리
 
@@ -16,7 +15,7 @@
 
     - 3-way handshake
 
-  ![TCP001](https://github.com/znah54/Basic-TCP-IP/assets/50408406/88cb4cb9-64bd-46b6-aa3b-2437f778759c)
+  ![TCP001](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/TCP001.png)
 
     - 송수신자 확인 뒤 데이터를 주고 받음
 
@@ -38,7 +37,7 @@
     - IP 계층 - 비 연결지향적 신뢰할 수 없는 프로토콜, 데이터를 전송할 때마다 거쳐야 할 경오를 선택, 그 경로는 일정치 않음
     - TCP/UDP 계층 - 전송계층으로 위의 TCP와 UDP의 차이로 설명가능
 
-<img src=https://github.com/znah54/Basic-TCP-IP/blob/main/images/TCP002.png>
+![TCP002](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/TCP002.png)
 
 
 ## 3일차
@@ -56,14 +55,22 @@
 
 - DNS(Domain Name System)
 
-<img src=https://github.com/znah54/Basic-TCP-IP/blob/main/images/TCP003.png>
+![TCP003](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/TCP003.png)
 
 
 - 소켓의 다양한 옵션
 
-<img src=https://github.com/znah54/Basic-TCP-IP/blob/main/images/TCP004.png>
+![TCP004](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/TCP004.png)
 
 - 프로세스 : 컴퓨터에서 실행중인 프로그램
-=======
-# Linux-SocketProgramming
->>>>>>> parent of f8df9d2 (.)
+
+## 4일차
+
+- 멀티태스킹 기반의 다중접속 서버
+    - 서버
+    
+    ![멀티태스킹 서버](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/multi001.png)
+
+    - 클라이언트
+
+    ![멀티태스킹 클라이언트](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/multi002.png)
