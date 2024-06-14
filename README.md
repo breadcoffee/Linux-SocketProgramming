@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Linux-SocketProgramming-2024
 부경대 2024 IoT 개발자 과정 리눅스 소켓프로그래밍 학습 리포지토리
 
@@ -63,3 +64,6 @@
 <img src=https://github.com/znah54/Basic-TCP-IP/blob/main/images/TCP004.png>
 
 - 프로세스 : 컴퓨터에서 실행중인 프로그램
+=======
+# Linux-SocketProgramming
+>>>>>>> parent of f8df9d2 (.)
