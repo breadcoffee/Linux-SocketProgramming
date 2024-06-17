@@ -87,11 +87,42 @@
         ![select 클라이언트](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/select001.png)
 
 ## 5일차
-- send & recv 입출력 함수
+- 입출력 함수
+    - send & recv 함수
+
     ```c
     ssize_t send(int sockfd, const void *buf, size_t nbytes, int flags);
     // sockfd : 데이터 전송 대상과의 연결을 의미하는 소켓의 파일 디스크립터 전달
     // buf : 전송할 데이터를 저장하고 있는 버퍼의 주소 값 전달
     // nbytes : 전송할 바이트 수 전달
     // flags : 데이터 전송 시 적용할 다양한 옵션 정보 전달
+
+    ssize_t recv(int sockfd, void *buf, size_t nbytes, int flags);
+    // sockfd : 데이터 수신 대상과의 연결을 의미하는 소켓의 파일 디스크립터 전달
+    // buf : 수신된 데이터를 저장할 버퍼의 주소 값 전달
+    // nbytes : 수신할 수 있는 최대 바이트 수 전달
+    // flags : 데이터 수신 시 적용할 다양한 옵션 정보 전달
     ```
+    - 옵션
+        - MSG_OBB
+            - 긴급 데이터(Out-of-band data)의 전송을 위한 옵션
+
+        - MSG_PEEK
+            - MSG_PEEK 옵션은 MSG_DONTWAIT 옵션과 함께 설정
+            - 입력버퍼에 수신된 데이터가 존재하는지 확인하는 용도로 사용
+
+        - MSG_DONTROUTE
+            - 데이터 전송과정에서 라우팅 테이블을 참조하지 않을 것을 요구하는 옵션
+            - 로컬 네트워크 상에서 목적지를 찾을 때 사용되는 옵션
+
+        - MSG_DONTWAIT
+            - 입출력 함수 호출과정에서 블로킹 되지 않을 것을 요구하기 위한 옵션
+            - 넌-블로킹 IO의 요구에 사용되는 옵션
+
+        - MSG_WAITALL
+            - 요청한 바이트 수에 해당하는 데이터가 전부 수신될 때까지 호출된 함수가 반환되는 것을 막기 위한 옵션
+
+    - readv & writev 함수
+        - 데이터를 모아서 전송, 모아서 수신하는 기능의 함수
+        - writev 함수를 사용하면 여러 버퍼에 나뉘어 저장되어 있는 데이터를 한번에 전송할 수 있고
+        - readv 함수를 사용하면 데이터를 여러 버퍼에 나눠서 수신할 수 있다.
