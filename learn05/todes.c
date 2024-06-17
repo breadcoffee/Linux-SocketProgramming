@@ -13,7 +13,7 @@ int main(){
     printf("First file descriptor: %d \n", fd);
     fp = fdopen(fd, "w");
     fputs("TCP/IP SOCKET PROGRAMMING \n", fp);
-    printf("Second file descriptor: %d \n" fileno(fp));
+    printf("Second file descriptor: %d \n", fileno(fp));
     fclose(fp);
     return 0;
 }
