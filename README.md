@@ -85,3 +85,13 @@
             3. 호출결과 확인
 
         ![select 클라이언트](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/select001.png)
+
+## 5일차
+- send & recv 입출력 함수
+    ```c
+    ssize_t send(int sockfd, const void *buf, size_t nbytes, int flags);
+    // sockfd : 데이터 전송 대상과의 연결을 의미하는 소켓의 파일 디스크립터 전달
+    // buf : 전송할 데이터를 저장하고 있는 버퍼의 주소 값 전달
+    // nbytes : 전송할 바이트 수 전달
+    // flags : 데이터 전송 시 적용할 다양한 옵션 정보 전달
+    ```
