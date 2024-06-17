@@ -15,7 +15,7 @@ int acpt_sock;
 int recv_sock;
 
 int main(int argc, char *argv[]){
-    struct sockaddr_in recv_adr, serv_adr;
+    struct sockaddr_in, recv_adr, serv_adr;
     int str_len, state;
     socklen_t serv_adr_sz;
     struct sigaction act;
