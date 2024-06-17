@@ -2,7 +2,7 @@
 #include <sys/uio.h>
 
 int main(int argc, char *argv[]){
-    struct iovex vec[2];
+    struct iovec vec[2];
     char buf1[] = "ABCDEFG";
     char buf2[] = "1234567";
     int str_len;
