@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	serv_adr.sin_port = htons(atoi(argv[1]));
 
 	bind(serv_sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr));
-	listen(serv_sock, 5)
+	listen(serv_sock, 5);
 	clnt_adr_sz = sizeof(clnt_adr);
 	clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     shutdown(fileno(writefp), SHUT_WR);
     fclose(writefp);
-    
+
     fgets(buf, sizeof(buf), readfp);
     fputs(buf, stdout);
     fclose(readfp);
