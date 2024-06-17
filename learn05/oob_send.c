@@ -10,7 +10,7 @@ void error_handling(char *message);
 
 int main(int argc, char *argv[]){
     int sock;
-    struct sockaddr_in, recv_adr;
+    struct sockaddr_in recv_adr;
     if(argc != 3){
         printf("Usage : %s <IP> <port>\n", argv[0]);
         exit(1);
