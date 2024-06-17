@@ -10,8 +10,10 @@ int main(){
         return -1;
     }
 
+    printf("First file descriptor: %d \n", fd);
     fp = fdopen(fd, "w");
-    fputs("Network C programming \n", fp);
+    fputs("TCP/IP SOCKET PROGRAMMING \n", fp);
+    printf("Second file descriptor: %d \n" fileno(fp));
     fclose(fp);
     return 0;
 }
