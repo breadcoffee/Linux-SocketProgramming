@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	char message[BUF_SIZE];
 	int str_len, i;
 
-	struct sockaddr_in serv_adr, 
+	struct sockaddr_in serv_adr;
     struct sockaddr_in clnt_adr;
 	socklen_t clnt_adr_sz;
     FILE *readfp;
