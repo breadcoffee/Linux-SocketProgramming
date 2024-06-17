@@ -139,3 +139,24 @@
     - 파일 디스크립터를 FILE 구조체의 포인터로 변환해야한다.
 
     fflush : 출력버퍼를 비운다.
+
+- 입출력 스트림 분리
+    - 이점
+        - 읽기모드와 쓰기모드의 구분을 통한 구현의 편의성 증대
+        - 입력버퍼와 출력버퍼를 구분함으로 인한 버퍼링 기능의 향상
+        - 스트림 분리방법이나 분리 목적이 달라지면 이점도 달라진다.
+
+    - Half-close
+        - Half close, 말 그대로 반만(Half) 닫는다(Close) 라는 뜻이다. 즉, 두 개의 스트림 중 하나만 닫아서 한 쪽 스트림은 열어두는 상태를 뜻한다.
+        - A가 데이터를 모두 보내고, A의 입력 스트림을 닫음으로써 B에게 EOF를 전달한다.
+        - B는 EOF를 확인하고, 데이터 수신의 끝임을 알 수 있고, 메시지를 보내면 된다.
+
+    - 스트림 종료 시 Half-close가 진행되지 않은 이유
+        - 읽기 모드 FILE 포인터와 쓰기모드 FILE 포인터는 하나의 디스크립터를 기반으로 생성되었기 때문에 어떠한 FILE 포인터를 대상으로 fclose 함수를 호출하더라도 파일 디스크립터가 종료되고, 이는 소켓의 완전 종료로 이어진다.
+
+        ![FILE 포인터관계](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/16001.png)
+
+    - Half-close를 위한 모델
+        -  파일 디스크립터를 복사한 다음에 가각의 파일 디스크립터를 대상으로 FILE 포인터를 만들면, FILE 포인터 소멸 시 해당 파일 포인터에 연결된 파일 디스크립터만 소멸된다.
+
+        ![Half-close를 위한 모델](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/16002.png)
