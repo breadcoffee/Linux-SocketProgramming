@@ -229,13 +229,13 @@
 
             - 뮤텍스(Mutex) : lock, unlock 함수를 이용해서 임계영역의 시작과 끝을 감싸 임계영역에 대한 자물쇠 역할을 하면서 둘 이상의 쓰레드 접근을 허용하지않게 된다. 단 lock, unlock 함수의 호출에는 생각보다 오랜 시간이 걸린다.
 
-    ```C
-    pthread_mutex_lock(&mutex);
-    // 임계영역의 시작
-    // ...
-    // 임계영역의 끝
-    pthread_mutex_unlock(&mutex);
-    ```
+     ```C
+     pthread_mutex_lock(&mutex);
+     // 임계영역의 시작
+     // ...
+     // 임계영역의 끝
+     pthread_mutex_unlock(&mutex);
+     ```
 
             - 세마포어(Semaphore) : 뮤텍스와 매우 유사하다. lock, unlock이 있던 것처럼 세마포어에는 sem_post, sem_wait가 있는데 sem_post가 호출되면 +1를 sem_wait가 호출되면 -1를 한다.
 
