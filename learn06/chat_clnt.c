@@ -52,13 +52,14 @@ void * send_msg(void * arg)   // send thread main
 	char name_msg[NAME_SIZE+BUF_SIZE];
 	while(1) 
 	{
+        printf("enter > ");
 		fgets(msg, BUF_SIZE, stdin);
 		if(!strcmp(msg,"q\n")||!strcmp(msg,"Q\n")) 
 		{
 			close(sock);
 			exit(0);
 		}
-		sprintf(name_msg,"> %s %s", name, msg);
+		sprintf(name_msg,"%s %s", name, msg);
 		write(sock, name_msg, strlen(name_msg));
 	}
 	return NULL;
