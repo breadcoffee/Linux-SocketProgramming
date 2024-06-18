@@ -10,7 +10,7 @@ long long num=0;
 
 int main(int argc, char *argv[]) 
 {
-	HANDLE thread_id[NUM_THREAD];
+	pthread_t thread_id[NUM_THREAD];
 	int i;
 
 	printf("sizeof long long: %d \n", sizeof(long long));
