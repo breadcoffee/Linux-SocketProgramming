@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
 void* thread_main(void *arg);
@@ -12,7 +13,8 @@ int main(int argc, char *argv[])
 		puts("pthread_create() error");
 		return -1;
 	}; 	
-	sleep(10);  puts("end of main");
+	sleep(10);
+    puts("end of main");
 	return 0;
 }
 
@@ -22,7 +24,8 @@ void* thread_main(void *arg)
 	int cnt=*((int*)arg);
 	for(i=0; i<cnt; i++)
 	{
-		sleep(1);  puts("running thread");	 
+		sleep(1);
+        puts("running thread");	 
 	}
 	return NULL;
 }
