@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <windows.h>
-#include <process.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <pthread.h>
 #define NUM_THREAD	100
 
 void * thread_inc(void * arg);
