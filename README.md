@@ -211,10 +211,10 @@
     - 임계영역(Critical Section) : 둘 이상의 쓰레드가 동시에 실행하면 문제를 일으키는 문장이 하나 이상 존재하는 함수를 말함
         - 쓰레드에 안전한 영역과 불안전한 영역이 존재한다.
 
-    ```C
-    struct hostent *gethostbuname(const char *hostname); // 쓰레드에 불안전
-    struct hostent *gethostbuname_r(const char *name, struct hostent *result, char *buffer, intbuflen, int *h_errnop); // 쓰레드에 안전
-    ```
+        ```C
+        struct hostent *gethostbuname(const char *hostname); // 쓰레드에 불안전
+        struct hostent *gethostbuname_r(const char *name, struct hostent *result, char *buffer, intbuflen, int *h_errnop); // 쓰레드에 안전
+        ```
 
         - 워커 쓰레드 모델 : 하나의 전역변수를 두개의 쓰레드가 직접 접근하는 모델
 
