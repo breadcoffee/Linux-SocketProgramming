@@ -216,4 +216,6 @@
         struct hostent *gethostbuname_r(const char *name, struct hostent *result, char *buffer, intbuflen, int *h_errnop); // 쓰레드에 안전
         ```
 
+        - 워커 쓰레드 모델 : 하나의 전역변수를 두개의 쓰레드가 직접 접근하는 모델
+
 
