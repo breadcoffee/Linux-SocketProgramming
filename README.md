@@ -239,7 +239,6 @@
 
             - 세마포어(Semaphore) : 뮤텍스와 매우 유사하다. lock, unlock이 있던 것처럼 세마포어에는 sem_post, sem_wait가 있는데 sem_post가 호출되면 +1를 sem_wait가 호출되면 -1를 한다.
 
-
     ```C
     sem_wait(&sem); // 세마포어 값을 0으로
     // 임계영역의 시작
