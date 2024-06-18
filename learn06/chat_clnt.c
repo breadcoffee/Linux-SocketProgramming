@@ -58,7 +58,7 @@ void * send_msg(void * arg)   // send thread main
 			close(sock);
 			exit(0);
 		}
-		sprintf(name_msg,"%s %s", name, msg);
+		sprintf(name_msg,"> %s %s", name, msg);
 		write(sock, name_msg, strlen(name_msg));
 	}
 	return NULL;
