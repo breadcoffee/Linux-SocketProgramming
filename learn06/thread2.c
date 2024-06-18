@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <pthread.h>
 void* thread_main(void *arg);
 
@@ -36,7 +37,7 @@ void* thread_main(void *arg)
 
 	for(i=0; i<cnt; i++)
 	{
-		sleep(1);
+        sleep(1);
         puts("running thread");	 
 	}
 	return (void*)msg;
