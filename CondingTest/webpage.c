@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
 
             close(clnt_sock);
         }
-        else
             if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
                 puts("file write error!");
             puts("closing...");
