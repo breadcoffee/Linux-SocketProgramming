@@ -2,8 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#include <fcntl.h>
 #include<arpa/inet.h>
-#include<sys/socket.h>
+#include<sys/sendfile.h>
 
 #define BUF_SIZE 1024
 #define TRUE 1
