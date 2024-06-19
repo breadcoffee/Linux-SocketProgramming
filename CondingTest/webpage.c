@@ -4,6 +4,9 @@
 #include<sys/stat.h>
 #include <fcntl.h>
 #include<sys/sendfile.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
 #define BUF_SIZE 1024
 #define TRUE 1
