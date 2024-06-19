@@ -16,9 +16,9 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
                 "Server:Linux Web Server\r\n"
                 "Content-Type: text/html; charset=UTF-8\r\n\r\n"
                 "<!DOCTYPE html>\r\n"
-                "<html><head><title> My Web Page </title>\r\n"
-                "<style>body {background-color: #339999 }</style></head>\r\n"
-                "<body><center><h1>Hello world!!</h1><br>\r\n"
+                "<html><head><title> JooWon Web Page </title>\r\n"
+                "<style>body {background-color: #66FFFF }</style></head>\r\n"
+                "<body><center><h1>요시고 사진전!!</h1><br>\r\n"
                 "<img src=\"yosigo.jpg\"></center></body></html>\r\n";
 
 int main(int argc, char *argv[])
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         if(strstr(buf, "GET /yosigo.jpg") != NULL) {
             fdimg = open("yosigo.jpg", O_RDONLY);
             if((img_size = read(fdimg, img_buf, sizeof(img_buf))) == -1)
-                puts("file read error!");
+                error_handling("file read error!");
             close(fdimg);
 
             sprintf(buf, "HTTP/1.1 200 OK\r\n"
@@ -70,14 +70,14 @@ int main(int argc, char *argv[])
                          "Content-Type: image/jpeg\r\n"
                          "Content-Legth: %ld\r\n\r\n", img_size);
             if(write(clnt_sock, buf, strlen(buf)) < 0)
-                puts("file write error!!");
+                error_handling("file write error!!");
             if(write(clnt_sock, img_buf, img_size) < 0)
-                puts("file write error!!");
+                error_handling("file write error!!");
 
             close(clnt_sock);
         }
         if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
-            puts("file write error!");
+            error_handling("file write error!");
         puts("closing...");
         close(clnt_sock);
     }
