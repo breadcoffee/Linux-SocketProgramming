@@ -18,7 +18,7 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
                 "Content-Type: text/html; charset=UTF-8\r\n\r\n"
                 "<!DOCTYPE html>\r\n"
                 "<html><head><title> My Web Page </title>\r\n"
-                "<style>body {background-color: #FFFF00 }</style></head>\r\n"
+                "<style>body {background-color: #339999 }</style></head>\r\n"
                 "<body><center><h1>Hello world!!</h1><br>\r\n"
                 "<img src=\"yosigo.jpg\"></center></body></html>\r\n";
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
             close(clnt_sock);
         }
-        else{
+        else
             if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
                 puts("file write error!");
             puts("closing...");
@@ -85,7 +85,6 @@ int main(int argc, char *argv[])
         }
         close(serv_sock);
         return 0;
-    }
 }
 
 void error_handling(char *message)
