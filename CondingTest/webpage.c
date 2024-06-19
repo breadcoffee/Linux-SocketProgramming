@@ -6,7 +6,6 @@
 #include<sys/socket.h>
 
 #define BUF_SIZE 1024
-#define TRUE 1
 
 void error_handling(char *message);
 
@@ -24,7 +23,8 @@ int main(int argc, char *argv[])
 	int serv_sock, clnt_sock;
     int fdimg, img_size;
     int option = TRUE;
-    char img_buf[BUF_SIZE];
+    char buf[BUF_SIZE]
+    char img_buf[70000000];
 
 	struct sockaddr_in serv_adr, clnt_adr;
     socklen_t sin_len = sizeof(clnt_adr);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
 	serv_sock=socket(PF_INET, SOCK_STREAM,0);
     setsockopt(serv_sock, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(int));
-    
+
 	if(serv_sock==-1)
 		error_handling("socket() error");
 
