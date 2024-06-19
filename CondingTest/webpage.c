@@ -76,14 +76,13 @@ int main(int argc, char *argv[])
 
             close(clnt_sock);
         }
-
-            if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
-                puts("file write error!");
-            puts("closing...");
-            close(clnt_sock);
-        }
-        close(serv_sock);
-        return 0;
+        if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
+            puts("file write error!");
+        puts("closing...");
+        close(clnt_sock);
+    }
+    close(serv_sock);
+    return 0;
 }
 
 void error_handling(char *message)
