@@ -8,7 +8,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 2048
 #define TRUE 1
 
 void error_handling(char *message);
