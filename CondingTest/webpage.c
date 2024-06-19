@@ -1,157 +1,149 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <pthread.h>
+#include <winsock2.h>
+#include <process.h>
 
-#define BUF_SIZE 1024
-#define SMALL_BUF 100
+#define BUF_SIZE  2048
+#define BUF_SMALL  100
 
-void* request_handler(void* arg);
-void send_data(FILE* fp, char* ct, char* file_name);
-char* content_type(char* file);
-void send_error(FILE* fp);
-void error_handling(char* message);
+unsigned  WINAPI RequestHandler(void* arg);
+char* ContentType(char* file);
+void SendData(SOCKET sock, char* ct, char* fileName);
+void SendErrorMSG(SOCKET sock);
+void ErrorHandling(char *message);
 
 int main(int argc, char *argv[])
 {
-	int serv_sock, clnt_sock;
-	struct sockaddr_in serv_adr, clnt_adr;
-	int clnt_adr_size;
-	char buf[BUF_SIZE];
-	pthread_t t_id;	
+	WSADATA wsaData;
+	SOCKET hServSock, hClntSock;
+	SOCKADDR_IN servAdr, clntAdr;
+
+	HANDLE hThread;
+	DWORD dwThreadID;
+	int clntAdrSize;
+
 	if(argc!=2) {
 		printf("Usage : %s <port>\n", argv[0]);
 		exit(1);
 	}
 	
-	serv_sock=socket(PF_INET, SOCK_STREAM, 0);
-	memset(&serv_adr, 0, sizeof(serv_adr));
-	serv_adr.sin_family=AF_INET;
-	serv_adr.sin_addr.s_addr=htonl(INADDR_ANY);
-	serv_adr.sin_port = htons(atoi(argv[1]));
-	if(bind(serv_sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr))==-1)
-		error_handling("bind() error");
-	if(listen(serv_sock, 20)==-1)
-		error_handling("listen() error");
+	if(WSAStartup(MAKEWORD(2, 2), &wsaData)!=0)
+		ErrorHandling("WSAStartup() error!");
+	
+	hServSock=socket(PF_INET, SOCK_STREAM, 0);   
+	memset(&servAdr, 0, sizeof(servAdr));
+	servAdr.sin_family=AF_INET;
+	servAdr.sin_addr.s_addr=htonl(INADDR_ANY);
+	servAdr.sin_port=htons(atoi(argv[1]));
+	
+	if(bind(hServSock, (SOCKADDR*) &servAdr, sizeof(servAdr))==SOCKET_ERROR)
+		ErrorHandling("bind() error");
+	if(listen(hServSock, 5)==SOCKET_ERROR)
+		ErrorHandling("listen() error");
 
+	/* 요청 및 응답 */
 	while(1)
 	{
-		clnt_adr_size=sizeof(clnt_adr);
-		clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_size);
+		clntAdrSize=sizeof(clntAdr);
+		hClntSock=accept(hServSock, (SOCKADDR*)&clntAdr, &clntAdrSize);
 		printf("Connection Request : %s:%d\n", 
-			inet_ntoa(clnt_adr.sin_addr), ntohs(clnt_adr.sin_port));
-		pthread_create(&t_id, NULL, request_handler, &clnt_sock);
-		pthread_detach(t_id);
+			inet_ntoa(clntAdr.sin_addr), ntohs(clntAdr.sin_port));
+		hThread=(HANDLE)_beginthreadex(
+			NULL, 0, RequestHandler, (void*)hClntSock, 0, (unsigned *)&dwThreadID);
 	}
-	close(serv_sock);
+	closesocket(hServSock);
+	WSACleanup();
 	return 0;
 }
 
-void* request_handler(void *arg)
+unsigned WINAPI RequestHandler(void *arg)
 {
-	int clnt_sock=*((int*)arg);
-	char req_line[SMALL_BUF];
-	FILE* clnt_read;
-	FILE* clnt_write;
+	SOCKET hClntSock=(SOCKET)arg;
+	char buf[BUF_SIZE];
+	char method[BUF_SMALL];
+	char ct[BUF_SMALL];
+	char fileName[BUF_SMALL];
 	
-	char method[10];
-	char ct[15];
-	char file_name[30];
-  
-	clnt_read=fdopen(clnt_sock, "r");
-	clnt_write=fdopen(dup(clnt_sock), "w");
-	fgets(req_line, SMALL_BUF, clnt_read);	
-	if(strstr(req_line, "HTTP/")==NULL)
+	recv(hClntSock, buf, BUF_SIZE, 0);
+	if(strstr(buf, "HTTP/")==NULL)    // HTTP에 의한 요청인지 확인
 	{
-		send_error(clnt_write);
-		fclose(clnt_read);
-		fclose(clnt_write);
-		return;
-	 }
+		SendErrorMSG(hClntSock);
+		closesocket(hClntSock);
+		return 1;
+	}
 	
-	strcpy(method, strtok(req_line, " /"));
-	strcpy(file_name, strtok(NULL, " /"));
-	strcpy(ct, content_type(file_name));
-	if(strcmp(method, "GET")!=0)
-	{
-		send_error(clnt_write);
-		fclose(clnt_read);
-		fclose(clnt_write);
-		return;
-	 }
+	strcpy(method, strtok(buf, " /"));
+	if(strcmp(method, "GET"))    // GET 방식 요청인지 확인 
+		SendErrorMSG(hClntSock);
 
-	fclose(clnt_read);
-	send_data(clnt_write, ct, file_name); 
+	strcpy(fileName, strtok(NULL, " /"));    // 요청 파일이름 확인
+	strcpy(ct, ContentType(fileName));    // Content-type 확인	
+	SendData(hClntSock, ct, fileName);    // 응  답
+	return 0;
 }
 
-void send_data(FILE* fp, char* ct, char* file_name)
-{
+void SendData(SOCKET sock, char* ct, char* fileName) 
+{	
 	char protocol[]="HTTP/1.0 200 OK\r\n";
-	char server[]="Server:Linux Web Server \r\n";
-	char cnt_len[]="Content-length:2048\r\n";
-	char cnt_type[SMALL_BUF];
+	char servName[]="Server:simple web server\r\n";
+	char cntLen[]="Content-length:2048\r\n";
+	char cntType[BUF_SMALL];
 	char buf[BUF_SIZE];
-	FILE* send_file;
-	
-	sprintf(cnt_type, "Content-type:%s\r\n\r\n", ct);
-	send_file=fopen(file_name, "r");
-	if(send_file==NULL)
+	FILE* sendFile;
+
+	sprintf(cntType, "Content-type:%s\r\n\r\n", ct);
+	if((sendFile=fopen(fileName, "r"))==NULL)
 	{
-		send_error(fp);
+		SendErrorMSG(sock);
 		return;
 	}
 
 	/* 헤더 정보 전송 */
-	fputs(protocol, fp);
-	fputs(server, fp);
-	fputs(cnt_len, fp);
-	fputs(cnt_type, fp);
+	send(sock, protocol, strlen(protocol), 0);
+	send(sock, servName, strlen(servName), 0);
+	send(sock, cntLen, strlen(cntLen), 0); 
+	send(sock, cntType, strlen(cntType), 0);
 
 	/* 요청 데이터 전송 */
-	while(fgets(buf, BUF_SIZE, send_file)!=NULL) 
-	{
-		fputs(buf, fp);
-		fflush(fp);
-	}
-	fflush(fp);
-	fclose(fp);
+	while(fgets(buf, BUF_SIZE, sendFile)!=NULL) 
+		send(sock, buf, strlen(buf), 0);
+
+	closesocket(sock);   // HTTP 프로토콜에 의해서 응답 후 종료
 }
 
-char* content_type(char* file)
+void SendErrorMSG(SOCKET sock)   // 오류 발생시 메시지 전달
+{	
+	char protocol[]="HTTP/1.0 400 Bad Request\r\n";
+	char servName[]="Server:simple web server\r\n";
+	char cntLen[]="Content-length:2048\r\n";
+	char cntType[]="Content-type:text/html\r\n\r\n";
+	char content[]="<html><head><title>NETWORK</title></head>"
+	       "<body><font size=+5><br>오류 발생! 요청 파일명 및 요청 방식 확인!"
+		   "</font></body></html>";
+
+	send(sock, protocol, strlen(protocol), 0);
+	send(sock, servName, strlen(servName), 0);
+	send(sock, cntLen, strlen(cntLen), 0); 
+	send(sock, cntType, strlen(cntType), 0);
+	send(sock, content, strlen(content), 0);
+	closesocket(sock);
+}
+
+char* ContentType(char* file)    // Content-Type 구분
 {
-	char extension[SMALL_BUF];
-	char file_name[SMALL_BUF];
-	strcpy(file_name, file);
-	strtok(file_name, ".");
+	char extension[BUF_SMALL];
+	char fileName[BUF_SMALL];
+	strcpy(fileName, file);
+	strtok(fileName, ".");
 	strcpy(extension, strtok(NULL, "."));
-	
 	if(!strcmp(extension, "html")||!strcmp(extension, "htm")) 
 		return "text/html";
 	else
 		return "text/plain";
 }
 
-void send_error(FILE* fp)
-{	
-	char protocol[]="HTTP/1.0 400 Bad Request\r\n";
-	char server[]="Server:Linux Web Server \r\n";
-	char cnt_len[]="Content-length:2048\r\n";
-	char cnt_type[]="Content-type:text/html\r\n\r\n";
-	char content[]="<html><head><title>NETWORK</title></head>"
-	       "<body><font size=+5><br>오류 발생! 요청 파일명 및 요청 방식 확인!"
-		   "</font></body></html>";
-
-	fputs(protocol, fp);
-	fputs(server, fp);
-	fputs(cnt_len, fp);
-	fputs(cnt_type, fp);
-	fflush(fp);
-}
-
-void error_handling(char* message)
+void ErrorHandling(char* message)
 {
 	fputs(message, stderr);
 	fputc('\n', stderr);
