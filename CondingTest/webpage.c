@@ -17,8 +17,8 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
                 "Content-Type: text/html; charset=UTF-8\r\n\r\n"
                 "<!DOCTYPE html>\r\n"
                 "<html><head><title> My Web Page </title>\r\n"
-                "<style>body {background-color: #339999 }</style></head>\r\n"
-                "<body><center><h1>photographs by YOSIGO</h1><br>\r\n"
+                "<style>body {background-color: #669999 }</style></head>\r\n"
+                "<body><center><h1>photographs by YOSIGO!!</h1><br>\r\n"
                 "<img src=\"yosigo.jpg\"></center></body></html>\r\n";
 
 int main(int argc, char *argv[])
