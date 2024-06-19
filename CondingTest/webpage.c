@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	int serv_sock, clnt_sock;
     int fdimg, img_size;
     int option = TRUE;
-    char buf[BUF_SIZE]
+    char buf[BUF_SIZE];
     char img_buf[70000000];
 
 	struct sockaddr_in serv_adr, clnt_adr;
