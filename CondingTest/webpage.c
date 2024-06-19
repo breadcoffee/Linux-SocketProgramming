@@ -22,17 +22,21 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
 int main(int argc, char *argv[])
 {
 	int serv_sock, clnt_sock;
-    socklen_t sin_len = sizeof(clnt_adr);
     int fdimg, img_size;
     int option = TRUE;
     char img_buf[BUF_SIZE];
+
 	struct sockaddr_in serv_adr, clnt_adr;
+    socklen_t sin_len = sizeof(clnt_adr);
 
 	if(argc!=2){
 			printf("Usage : %s <port>\n", argv[0]);
 			exit(1);
-		}
+	}
+
 	serv_sock=socket(PF_INET, SOCK_STREAM,0);
+    setsockopt(serv_sock, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(int));
+    
 	if(serv_sock==-1)
 		error_handling("socket() error");
 
