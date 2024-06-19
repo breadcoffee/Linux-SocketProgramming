@@ -6,8 +6,9 @@
 #include<sys/socket.h>
 
 #define BUF_SIZE 1024
-void error_handling(char *message);
+#define TRUE 1
 
+void error_handling(char *message);
 
 char webpage[] = "HTTP/1.1 200 OK\r\n"
                 "Server:Linux Web Server\r\n"
@@ -21,11 +22,11 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
 int main(int argc, char *argv[])
 {
 	int serv_sock, clnt_sock;
-	char message[BUF_SIZE];
-	int str_len, i;
-
+    socklen_t sin_len = sizeof(clnt_adr);
+    int fdimg, img_size;
+    int option = TRUE;
+    char img_buf[BUF_SIZE];
 	struct sockaddr_in serv_adr, clnt_adr;
-	socklen_t clnt_adr_sz;
 
 	if(argc!=2){
 			printf("Usage : %s <port>\n", argv[0]);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
 
         if(strstr(buf, "GET /yosigo.jpg") != NULL){
             fdimg = open("yosigo.jpg", O_RDONLY);
-            if((img_size = read(fdimg, img_buf, sizeof(imgbuf))) == -1)
+            if((img_size = read(fdimg, img_buf, sizeof(img_buf))) == -1)
                 puts("file read error!");
             close(fdimg);
 
