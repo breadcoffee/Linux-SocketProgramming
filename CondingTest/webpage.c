@@ -1,14 +1,13 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include<arpa/inet.h>
 #include<unistd.h>
 #include<sys/socket.h>
 #include<sys/stat.h>
 #include <fcntl.h>
 #include<sys/sendfile.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 
-#define BUF_SIZE 2048
 #define TRUE 1
 
 void error_handling(char *message);
@@ -24,14 +23,14 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
 
 int main(int argc, char *argv[])
 {
+	struct sockaddr_in serv_adr, clnt_adr;
+    socklen_t sin_len = sizeof(clnt_adr);
+
 	int serv_sock, clnt_sock;
     int fdimg, img_size;
     int option = TRUE;
-    char buf[BUF_SIZE];
-    char img_buf[70000000];
-
-	struct sockaddr_in serv_adr, clnt_adr;
-    socklen_t sin_len = sizeof(clnt_adr);
+    char buf[2048];
+    char img_buf[700000];
 
 	if(argc!=2){
 			printf("Usage : %s <port>\n", argv[0]);
@@ -60,8 +59,8 @@ int main(int argc, char *argv[])
         read(clnt_sock, buf, 2047);
         printf("%s\n", buf);
 
-        if(strstr(buf, "GET /yosigo.jpg") != NULL){
-            fdimg = open("yosigo.jpg", O_RDONLY);
+        if(strstr(buf, "GET /yosigo.jpg") != NULL) {
+        fdimg = open("yosigo.jpg", O_RDONLY);
             if((img_size = read(fdimg, img_buf, sizeof(img_buf))) == -1)
                 puts("file read error!");
             close(fdimg);
@@ -70,13 +69,15 @@ int main(int argc, char *argv[])
                          "Server: Linux Web Server\r\n"
                          "Content-Type: image/jpeg\r\n"
                          "Content-Legth: %ld\r\n\r\n", img_size);
-            if(write(clnt_sock, buf, strlen(buf)) < 0)
-                puts("file write error!!");
+        if(write(clnt_sock, buf, strlen(buf)) < 0)
+            puts("file write error!!");
             if(write(clnt_sock, img_buf, img_size) < 0)
                 puts("file write error!!");
 
             close(clnt_sock);
         }
+        else
+            //send(clnt_sock, webpage, sizeof(webpage), 0);
             if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
                 puts("file write error!");
             puts("closing...");
