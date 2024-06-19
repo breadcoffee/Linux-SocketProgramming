@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
         printf("%s\n", buf);
 
         if(strstr(buf, "GET /yosigo.jpg") != NULL) {
-        fdimg = open("yosigo.jpg", O_RDONLY);
+            fdimg = open("yosigo.jpg", O_RDONLY);
             if((img_size = read(fdimg, img_buf, sizeof(img_buf))) == -1)
                 puts("file read error!");
             close(fdimg);
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
                          "Server: Linux Web Server\r\n"
                          "Content-Type: image/jpeg\r\n"
                          "Content-Legth: %ld\r\n\r\n", img_size);
-        if(write(clnt_sock, buf, strlen(buf)) < 0)
-            puts("file write error!!");
+            if(write(clnt_sock, buf, strlen(buf)) < 0)
+                puts("file write error!!");
             if(write(clnt_sock, img_buf, img_size) < 0)
                 puts("file write error!!");
 
