@@ -252,3 +252,9 @@
         1. pthread_join 함수의 호출 : pthread_join 함수가 호출되면 쓰레드의 종료를 대기할 뿐만 아니라 쓰레드의 소멸까지 유도된다. 하지만 이 함수의 문제점은 쓰레드가 종료될 때까지 블로킹 상태에 놓이게 된다.
 
         2. pthread_detach 함수의 호출 : pthread_detach 함수는 호출했다고 해서 종료되지 않은 쓰레드가 종료되거나 블로킹 상태에 놓이지는 않는다. 따라서 이 함수를 통해 쓰레드에게 할당된 메모리의 소멸을 유도할 수 있다. 단, 이 함수가 호출된 이후 pthread_join 함수는 호출이 불가능하다.
+
+## 7일차
+- 코딩테스트
+    - HTML 웹 서버
+    
+    ![웹페이지](https://raw.githubusercontent.com/breadcoffee/Linux-SocketProgramming-2024/main/images/webpage.png)
